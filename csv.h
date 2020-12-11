@@ -77,7 +77,7 @@ public:
     void truncate_column(int);
     
     //concatena dos archivos
-    csv concat(csv, string);
+    csv* concat(csv*, string);
     
     //escribe los datos a un archivo txt
     void write_file();

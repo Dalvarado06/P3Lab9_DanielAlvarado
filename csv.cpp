@@ -220,14 +220,16 @@ void csv::print_data() {
 
 vector<string> csv::get_row(int index) {
 
-    return data[index];
+    if (index < data.size())
+        return data[index];
+
 }
 
 vector<string> csv::get_column(int index) {
 
     vector<string> selectedColumn;
 
-    if (index >= data.size()) {
+    if (index >= data[0].size()) {
         cout << "La columna deseada no existe" << endl << endl;
     } else {
 
@@ -251,7 +253,7 @@ vector<string> csv::get_max(int index) {
     string maxTemp = "";
     string max = "";
 
-    if (index >= data.size()) {
+    if (index >= data[0].size()) {
         cout << "Esa columna no existe!!" << endl;
     } else {
 
@@ -277,11 +279,11 @@ vector<string> csv::get_min(int index) {
     string minTemp = "";
     string min = "";
 
-    if (index >= data.size()) {
+    if (index >= data[0].size()) {
         cout << "Esa columna no existe!!" << endl;
     } else {
 
-         for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
 
             minTemp = data[i][index];
 
@@ -295,4 +297,88 @@ vector<string> csv::get_min(int index) {
         return data[minFila];
 
     }
+}
+
+void csv::truncate_row(int row){
+    
+    if(row >= data.size()){
+        cout << "La fila no existe !!!" << endl << endl;
+    }else{
+        data.erase(data.begin()+row);
+        data_count = data_count - 1;
+    }
+}
+
+void csv::truncate_column(int column){
+    
+    if(column >= data[0].size()){
+        cout << "La columna seleccionada no existe" << endl << endl;
+    }else{
+        
+        for(int i = 0; i < data.size(); i++){
+            
+            vector<string> fila;
+            fila = data[i];
+            
+            fila.erase(fila.begin()+column);
+            
+            data[i] = fila;
+        }
+    }
+}
+
+csv* csv::concat(csv* archivo1, string newName){
+    
+    vector<string> headers = archivo1->getEncabezados();
+    bool sonIguales = false;
+    
+    if(encabezados.size() > 0 && headers.size() > 0){
+        
+        bool equalHeaders = false;
+        
+        if(headers.size() == encabezados.size()){
+            
+            for(int i = 0; i < headers.size(); i++){
+                
+                if(headers[i] == encabezados[i]){
+                    sonIguales = true;
+                }else{
+                    sonIguales = false;
+                }
+            }
+        }else{
+            cout << "Hay discrepancia en los headers!" << endl << endl;
+            sonIguales = false;
+        }
+        
+    }else if(archivo1->getData().at(0).size() == data[0].size()){
+        sonIguales = true;
+    }
+    
+    csv* archivo2;
+    
+    if(sonIguales){
+        
+        archivo2 = new csv();
+        
+        for(int i = 0; i < data.size(); i++){
+            vector<string> fila = data[i];
+            
+            archivo2->getData().push_back(fila);
+        }
+        
+        
+        for(int i = 0; i < archivo1->getData().size(); i++){
+            vector<string> fila = archivo1->getData().at(i);
+            
+            archivo2->getData().push_back(fila);
+            
+        }
+        
+        archivo2->setFileName();
+        
+        return archivo2;
+    }
+    
+    
 }
