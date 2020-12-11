@@ -35,7 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/P3Lab9_DanielAlvarado.o
+	${OBJECTDIR}/P3Lab9_DanielAlvarado.o \
+	${OBJECTDIR}/csv.o
 
 
 # C Compiler Flags
@@ -66,6 +67,11 @@ ${OBJECTDIR}/P3Lab9_DanielAlvarado.o: P3Lab9_DanielAlvarado.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/P3Lab9_DanielAlvarado.o P3Lab9_DanielAlvarado.cpp
+
+${OBJECTDIR}/csv.o: csv.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/csv.o csv.cpp
 
 # Subprojects
 .build-subprojects:

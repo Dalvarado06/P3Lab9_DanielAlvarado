@@ -12,6 +12,7 @@
  */
 
 #include <cstdlib>
+#include "csv.h"
 
 using namespace std;
 
@@ -19,7 +20,14 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-
+    
+    
+    csv* leer = new csv("Ejemplocsv.csv", true);
+    
+    leer->print_data();
+    
+    delete leer;
+    
     return 0;
 }
 
