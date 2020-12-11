@@ -43,7 +43,7 @@ string csv::getFileName() {
     return fileName;
 }
 
-void csv::setFileName() {
+void csv::setFileName(string fileName) {
     this->fileName = fileName;
 }
 
@@ -95,7 +95,10 @@ void csv::load_file(bool hayEncabezados) {
             buffer.clear();
 
             while (getline(leerArchivo, buffer)) {
-
+                
+                buffer.clear();
+                getline(leerArchivo, buffer);
+                
                 vector<string> listaD;
                 string datos = "";
                 for (int i = 0; i < buffer.length(); i++) {
@@ -201,7 +204,7 @@ void csv::print_data() {
         if (encabezados.size() > 0) {
             for (int i = 0; i < encabezados.size(); i++) {
 
-                cout << encabezados[i] << setw(15);
+                cout << encabezados[i] << setw(10) <<"\t";
             }
         }
 
@@ -210,7 +213,7 @@ void csv::print_data() {
 
         for (int i = 0; i < data.size(); i++) {
             for (int j = 0; j < data [i].size(); j++) {
-                cout << setw(15) << data [i][j];
+                cout << data [i][j] << setw(10) << "\t";
             }
             cout << endl;
         }
@@ -299,86 +302,154 @@ vector<string> csv::get_min(int index) {
     }
 }
 
-void csv::truncate_row(int row){
-    
-    if(row >= data.size()){
+void csv::truncate_row(int row) {
+
+    if (row >= data.size()) {
         cout << "La fila no existe !!!" << endl << endl;
-    }else{
-        data.erase(data.begin()+row);
+    } else {
+        data.erase(data.begin() + row);
         data_count = data_count - 1;
     }
 }
 
-void csv::truncate_column(int column){
-    
-    if(column >= data[0].size()){
+void csv::truncate_column(int column) {
+
+    if (column >= data[0].size()) {
         cout << "La columna seleccionada no existe" << endl << endl;
-    }else{
-        
-        for(int i = 0; i < data.size(); i++){
-            
+    } else {
+
+        for (int i = 0; i < data.size(); i++) {
+
             vector<string> fila;
             fila = data[i];
-            
-            fila.erase(fila.begin()+column);
-            
+
+            fila.erase(fila.begin() + column);
+
             data[i] = fila;
         }
     }
 }
 
-csv* csv::concat(csv* archivo1, string newName){
-    
+csv* csv::concat(csv* archivo1, string newName) {
+
     vector<string> headers = archivo1->getEncabezados();
     bool sonIguales = false;
-    
-    if(encabezados.size() > 0 && headers.size() > 0){
-        
-        bool equalHeaders = false;
-        
-        if(headers.size() == encabezados.size()){
-            
-            for(int i = 0; i < headers.size(); i++){
-                
-                if(headers[i] == encabezados[i]){
+
+    if (encabezados.size() > 0 && headers.size() > 0) {
+
+       
+        if (headers.size() == encabezados.size()) {
+
+            for (int i = 0; i < headers.size(); i++) {
+
+                if (headers[i] == encabezados[i]) {
                     sonIguales = true;
-                }else{
+                } else {
                     sonIguales = false;
                 }
             }
-        }else{
+        } else {
             cout << "Hay discrepancia en los headers!" << endl << endl;
             sonIguales = false;
         }
-        
-    }else if(archivo1->getData().at(0).size() == data[0].size()){
+
+    } else if (archivo1->getData().at(0).size() == data[0].size()) {
         sonIguales = true;
     }
-    
+
     csv* archivo2;
-    
-    if(sonIguales){
-        
+
+    if (sonIguales) {
+
         archivo2 = new csv();
-        
-        for(int i = 0; i < data.size(); i++){
+
+        for (int i = 0; i < data.size(); i++) {
             vector<string> fila = data[i];
-            
+
             archivo2->getData().push_back(fila);
         }
-        
-        
-        for(int i = 0; i < archivo1->getData().size(); i++){
+
+
+        for (int i = 0; i < archivo1->getData().size(); i++) {
             vector<string> fila = archivo1->getData().at(i);
-            
+
             archivo2->getData().push_back(fila);
-            
+
         }
-        
-        archivo2->setFileName();
-        
+
+        archivo2->setFileName(newName);
+
         return archivo2;
     }
-    
-    
+
+
+}
+
+vector<vector<string>> csv::sort_data(int columna, bool esAscendete) {
+
+    if (columna >= data[0].size()) {
+        cout << "La fila ingresada no es valida!!!" << endl << endl;
+        
+    } else {
+
+        if (esAscendete) {
+
+            bool flag = true;
+
+            while (flag) {
+
+                flag = false;
+
+                for (int i = 0; i < data.size() - 1; i++) {
+
+                    string fila1 = data[i][columna];
+                    string fila2 = data[i + 1][columna];
+
+                    if (fila1 < fila2) {
+
+                        vector<string> fila1 = data[i];
+                        truncate_row(i);
+
+                        data.push_back(fila1);
+
+                        flag = true;
+                    }
+
+                }
+
+            }
+
+            return data;
+
+        } else {
+
+            bool flag = true;
+
+            while (flag) {
+
+                flag = false;
+
+                for (int i = 0; i < data.size() - 1; i++) {
+
+                    string fila1 = data[i][columna];
+                    string fila2 = data[i + 1][columna];
+
+                    if (fila1 > fila2) {
+
+                        vector<string> fila2 = data[i+1];
+                        truncate_row(i+1);
+
+                        data.push_back(fila2);
+
+                        flag = true;
+                    }
+
+                }
+
+            }
+            
+            return data;
+        }
+
+    }
 }

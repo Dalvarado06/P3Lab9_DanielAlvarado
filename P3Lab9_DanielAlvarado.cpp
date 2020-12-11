@@ -22,7 +22,7 @@ using namespace std;
 int main(int argc, char** argv) {
     
     
-    csv* leer = new csv("Ejemplocsv.csv", true);
+    csv* leer = new csv("prototipoChikito.csv", false);
     
     leer->print_data();
     

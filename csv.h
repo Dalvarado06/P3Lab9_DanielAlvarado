@@ -42,7 +42,7 @@ public:
     //retorna el nombre del archivo
     string getFileName();
     //setea el nombre del archivo a usar
-    void setFileName();
+    void setFileName(string);
     //regresa los encabezados encontrados del archivo
     vector<string> getEncabezados();
     //retorna todos los datos del archivo
