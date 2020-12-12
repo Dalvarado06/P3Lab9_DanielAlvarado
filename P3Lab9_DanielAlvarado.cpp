@@ -13,6 +13,9 @@
 
 #include <cstdlib>
 #include "csv.h"
+#include <vector>
+#include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -22,7 +25,17 @@ using namespace std;
 int main(int argc, char** argv) {
     
     
-    csv* leer = new csv("prototipoChikito.csv", false);
+    csv* leer = new csv("prototipoChikito.csv", true);
+    
+    leer->print_data();
+    
+    vector<string> fila;
+     
+    leer->truncate_column(0);
+    
+//    for(int i = 0; i < fila.size(); i++){
+//        cout << fila[i] << endl;
+//    }
     
     leer->print_data();
     

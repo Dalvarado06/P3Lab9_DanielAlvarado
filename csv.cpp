@@ -68,7 +68,7 @@ void csv::load_file(bool hayEncabezados) {
     leerArchivo.open(fileName);
 
     if (leerArchivo.is_open()) {
-        cout << "El archivo existe" << endl;
+        
 
         string buffer = "";
 
@@ -96,8 +96,7 @@ void csv::load_file(bool hayEncabezados) {
 
             while (getline(leerArchivo, buffer)) {
                 
-                buffer.clear();
-                getline(leerArchivo, buffer);
+                
                 
                 vector<string> listaD;
                 string datos = "";
@@ -124,7 +123,8 @@ void csv::load_file(bool hayEncabezados) {
         } else {
 
             while (getline(leerArchivo, buffer)) {
-
+                
+                
                 vector<string> listaD;
                 string datos = "";
                 for (int i = 0; i < buffer.length(); i++) {
@@ -150,7 +150,6 @@ void csv::load_file(bool hayEncabezados) {
 
     }
 
-    cout << "No se encontro el archivo" << endl;
 
     leerArchivo.close();
 }
@@ -218,7 +217,9 @@ void csv::print_data() {
             cout << endl;
         }
     }
-
+    
+    cout << endl << endl;
+    
 }
 
 vector<string> csv::get_row(int index) {
@@ -327,6 +328,10 @@ void csv::truncate_column(int column) {
 
             data[i] = fila;
         }
+        
+        if(encabezados.empty() == false){
+            encabezados.erase(encabezados.begin()+column);
+        }
     }
 }
 
@@ -381,7 +386,6 @@ csv* csv::concat(csv* archivo1, string newName) {
 
         return archivo2;
     }
-
 
 }
 
